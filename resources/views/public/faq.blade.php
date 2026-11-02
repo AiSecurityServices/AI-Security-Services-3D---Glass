@@ -23,21 +23,17 @@
     </div>
 </section>
 
-{{-- FAQ Search --}}
-<section class="relative w-full border-t border-white/5" style="background:#020916;" aria-label="Search answers">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-10">
+{{-- FAQ Search & Categories --}}
+<section class="relative w-full border-t border-white/5" style="background:#020916;" x-data="{ activeCategory: 'general', search: '' }" aria-label="Questions by category">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-10">
         <div class="max-w-3xl mx-auto">
-            <div x-data="{ search: '' }" class="relative">
+            <div class="relative">
                 <label for="faq-search" class="sr-only">Search for answers</label>
                 <input type="text" id="faq-search" x-model="search" placeholder="Search answers: e.g. pricing, SLA, onboarding…"
                        class="ais-input text-sm !pl-4">
             </div>
         </div>
     </div>
-</section>
-
-{{-- FAQ Categories --}}
-<section class="relative w-full border-t border-white/5" style="background:#020916;" x-data="{ activeCategory: 'general', search: '' }" aria-label="Questions by category">
     <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
 
         {{-- Category Tabs --}}
@@ -59,7 +55,7 @@
         </div>
 
         {{-- General --}}
-        <div x-show="activeCategory === 'general'" class="ais-faq max-w-4xl mx-auto space-y-3">
+        <div x-show="search !== '' || activeCategory === 'general'" class="ais-faq max-w-4xl mx-auto space-y-3">
             @php
             $faqs = [
                 ['q' => 'What IT services does AISecurity provide?', 'a' => 'We provide comprehensive IT services including cybersecurity (penetration testing, vulnerability assessments, security audits), managed IT support, cloud infrastructure, web and software development, IT consulting, and digital transformation services.'],
@@ -70,7 +66,7 @@
             ];
             @endphp
             @foreach($faqs as $i => $faq)
-            <div x-data="{ open: false }" class="ais-card overflow-hidden">
+            <div x-data="{ open: false }" x-show="search === '' || {{ json_encode(strtolower($faq['q'] . ' ' . $faq['a'])) }}.includes(search.toLowerCase())" class="ais-card overflow-hidden">
                 <button @click="open = !open" class="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left" :aria-expanded="open.toString()">
                     <span class="flex-1 text-sm sm:text-base font-semibold text-white">{{ $faq['q'] }}</span>
                     <svg class="w-5 h-5 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="#7FB7E8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -83,7 +79,7 @@
         </div>
 
         {{-- Services --}}
-        <div x-show="activeCategory === 'services'" class="ais-faq max-w-4xl mx-auto space-y-3" style="display: none;">
+        <div x-show="search !== '' || activeCategory === 'services'" class="ais-faq max-w-4xl mx-auto space-y-3" style="display: none;">
             @php
             $faqs = [
                 ['q' => 'What cybersecurity services do you offer?', 'a' => 'Our cybersecurity services include penetration testing, vulnerability assessments, web application security testing, network security audits, security compliance audits (ISO 27001, SOC 2, HIPAA, GDPR), incident response, and managed security services.'],
@@ -94,7 +90,7 @@
             ];
             @endphp
             @foreach($faqs as $i => $faq)
-            <div x-data="{ open: false }" class="ais-card overflow-hidden">
+            <div x-data="{ open: false }" x-show="search === '' || {{ json_encode(strtolower($faq['q'] . ' ' . $faq['a'])) }}.includes(search.toLowerCase())" class="ais-card overflow-hidden">
                 <button @click="open = !open" class="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left" :aria-expanded="open.toString()">
                     <span class="flex-1 text-sm sm:text-base font-semibold text-white">{{ $faq['q'] }}</span>
                     <svg class="w-5 h-5 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="#7FB7E8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -107,7 +103,7 @@
         </div>
 
         {{-- Cybersecurity --}}
-        <div x-show="activeCategory === 'security'" class="ais-faq max-w-4xl mx-auto space-y-3" style="display: none;">
+        <div x-show="search !== '' || activeCategory === 'security'" class="ais-faq max-w-4xl mx-auto space-y-3" style="display: none;">
             @php
             $faqs = [
                 ['q' => 'How often should we conduct a penetration test?', 'a' => 'We recommend at least annually, with additional tests after major infrastructure changes, new application deployments, or following a security incident. Regulated industries may require more frequent testing.'],
@@ -117,7 +113,7 @@
             ];
             @endphp
             @foreach($faqs as $i => $faq)
-            <div x-data="{ open: false }" class="ais-card overflow-hidden">
+            <div x-data="{ open: false }" x-show="search === '' || {{ json_encode(strtolower($faq['q'] . ' ' . $faq['a'])) }}.includes(search.toLowerCase())" class="ais-card overflow-hidden">
                 <button @click="open = !open" class="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left" :aria-expanded="open.toString()">
                     <span class="flex-1 text-sm sm:text-base font-semibold text-white">{{ $faq['q'] }}</span>
                     <svg class="w-5 h-5 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="#7FB7E8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -130,7 +126,7 @@
         </div>
 
         {{-- Pricing --}}
-        <div x-show="activeCategory === 'pricing'" class="ais-faq max-w-4xl mx-auto space-y-3" style="display: none;">
+        <div x-show="search !== '' || activeCategory === 'pricing'" class="ais-faq max-w-4xl mx-auto space-y-3" style="display: none;">
             @php
             $faqs = [
                 ['q' => 'How is pricing determined?', 'a' => 'Our pricing depends on the service type, complexity, scope, and your location. We offer fixed-price projects, hourly rates, monthly retainer plans, and custom enterprise pricing. Visit our Pricing page for detailed plans.'],
@@ -141,7 +137,7 @@
             ];
             @endphp
             @foreach($faqs as $i => $faq)
-            <div x-data="{ open: false }" class="ais-card overflow-hidden">
+            <div x-data="{ open: false }" x-show="search === '' || {{ json_encode(strtolower($faq['q'] . ' ' . $faq['a'])) }}.includes(search.toLowerCase())" class="ais-card overflow-hidden">
                 <button @click="open = !open" class="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left" :aria-expanded="open.toString()">
                     <span class="flex-1 text-sm sm:text-base font-semibold text-white">{{ $faq['q'] }}</span>
                     <svg class="w-5 h-5 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="#7FB7E8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -154,7 +150,7 @@
         </div>
 
         {{-- Support --}}
-        <div x-show="activeCategory === 'support'" class="ais-faq max-w-4xl mx-auto space-y-3" style="display: none;">
+        <div x-show="search !== '' || activeCategory === 'support'" class="ais-faq max-w-4xl mx-auto space-y-3" style="display: none;">
             @php
             $faqs = [
                 ['q' => 'How do I submit a support ticket?', 'a' => 'Registered customers can submit support tickets directly from the Customer Portal under "My Tickets". You can also call our support line or email support@techsupport.com for urgent issues.'],
@@ -164,7 +160,7 @@
             ];
             @endphp
             @foreach($faqs as $i => $faq)
-            <div x-data="{ open: false }" class="ais-card overflow-hidden">
+            <div x-data="{ open: false }" x-show="search === '' || {{ json_encode(strtolower($faq['q'] . ' ' . $faq['a'])) }}.includes(search.toLowerCase())" class="ais-card overflow-hidden">
                 <button @click="open = !open" class="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left" :aria-expanded="open.toString()">
                     <span class="flex-1 text-sm sm:text-base font-semibold text-white">{{ $faq['q'] }}</span>
                     <svg class="w-5 h-5 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="#7FB7E8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -177,7 +173,7 @@
         </div>
 
         {{-- Account --}}
-        <div x-show="activeCategory === 'account'" class="ais-faq max-w-4xl mx-auto space-y-3" style="display: none;">
+        <div x-show="search !== '' || activeCategory === 'account'" class="ais-faq max-w-4xl mx-auto space-y-3" style="display: none;">
             @php
             $faqs = [
                 ['q' => 'How do I create an account?', 'a' => 'Click "Register" in the top navigation. Fill in your details, verify your email address via the OTP sent to your inbox, and then verify your phone number. Once both are verified, you will have full access to the Customer Portal.'],
@@ -187,7 +183,7 @@
             ];
             @endphp
             @foreach($faqs as $i => $faq)
-            <div x-data="{ open: false }" class="ais-card overflow-hidden">
+            <div x-data="{ open: false }" x-show="search === '' || {{ json_encode(strtolower($faq['q'] . ' ' . $faq['a'])) }}.includes(search.toLowerCase())" class="ais-card overflow-hidden">
                 <button @click="open = !open" class="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left" :aria-expanded="open.toString()">
                     <span class="flex-1 text-sm sm:text-base font-semibold text-white">{{ $faq['q'] }}</span>
                     <svg class="w-5 h-5 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="#7FB7E8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
