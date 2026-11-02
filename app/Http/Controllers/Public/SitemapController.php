@@ -21,7 +21,12 @@ class SitemapController extends Controller
             ['loc' => '/', 'priority' => '1.0', 'changefreq' => 'weekly'],
             ['loc' => '/about', 'priority' => '0.8', 'changefreq' => 'monthly'],
             ['loc' => '/services', 'priority' => '0.9', 'changefreq' => 'weekly'],
+            ['loc' => '/ai-services', 'priority' => '0.9', 'changefreq' => 'weekly'],
             ['loc' => '/pricing', 'priority' => '0.8', 'changefreq' => 'monthly'],
+            ['loc' => '/get-quote', 'priority' => '0.8', 'changefreq' => 'monthly'],
+            ['loc' => '/faq', 'priority' => '0.7', 'changefreq' => 'monthly'],
+            ['loc' => '/portfolio', 'priority' => '0.7', 'changefreq' => 'monthly'],
+            ['loc' => '/useful-links', 'priority' => '0.6', 'changefreq' => 'weekly'],
             ['loc' => '/contact', 'priority' => '0.7', 'changefreq' => 'monthly'],
             ['loc' => '/industries', 'priority' => '0.7', 'changefreq' => 'monthly'],
             ['loc' => '/offices', 'priority' => '0.6', 'changefreq' => 'monthly'],
@@ -34,6 +39,7 @@ class SitemapController extends Controller
             ['loc' => '/legal/cookie-policy', 'priority' => '0.3', 'changefreq' => 'yearly'],
             ['loc' => '/legal/refund-policy', 'priority' => '0.3', 'changefreq' => 'yearly'],
             ['loc' => '/legal/service-level-agreement', 'priority' => '0.4', 'changefreq' => 'yearly'],
+            ['loc' => '/legal/accessibility', 'priority' => '0.3', 'changefreq' => 'yearly'],
         ];
 
         foreach ($staticPages as $page) {
@@ -45,10 +51,12 @@ class SitemapController extends Controller
         }
 
         // Dynamic service pages
-        $services = Service::where('is_active', true)->select('slug', 'updated_at')->get();
+        $services = Service::where('is_active', true)->with('category')->get();
         foreach ($services as $service) {
+            $isAi = in_array($service->category?->slug, AiServiceController::AI_CATEGORY_SLUGS, true);
+            $prefix = $isAi ? '/ai-services/' : '/services/';
             $xml .= '  <url>'."\n";
-            $xml .= '    <loc>'.$url.'/services/'.$service->slug.'</loc>'."\n";
+            $xml .= '    <loc>'.$url.$prefix.$service->slug.'</loc>'."\n";
             $xml .= '    <lastmod>'.$service->updated_at->format('Y-m-d').'</lastmod>'."\n";
             $xml .= '    <changefreq>weekly</changefreq>'."\n";
             $xml .= '    <priority>0.7</priority>'."\n";

@@ -182,6 +182,14 @@
                     'challenges' => ['Phone and tablet damage on site', 'Job-app sync failures', 'Quote and invoice data loss', 'No office IT presence'],
                     'solutions' => ['Mobile-device provisioning', 'App troubleshooting and backups', 'Cloud file and photo protection', 'Simple monthly support plan'],
                 ],
+                [
+                    'name' => 'Aerospace, Aviation & Defence Supply Chain',
+                    'desc' => 'High-assurance IT support, secure engineering workstation management, controlled document workflows, and compliance-ready backup governance for aviation and defence contractors.',
+                    'icon' => 'M12 19l9 2-9-18-9 18 9-2zm0 0v-8',
+                    'tags' => ['High Assurance', 'CAD Workstations', 'Controlled Docs', 'Audit Trail'],
+                    'challenges' => ['Strict document access and export controls', 'High-performance CAD workstation stability', 'Supplier portal and MFA compliance', 'Immutable audit and backup requirements'],
+                    'solutions' => ['Role-based access reviews and MFA enforcement', 'Workstation patching and performance maintenance', 'Encrypted backup verification and restore drills', 'Full ticket and change-management audit trails'],
+                ],
             ] as $industry)
             <div class="ais-card p-7 sm:p-8 group">
                 <div class="flex items-center justify-between gap-3 mb-5">
